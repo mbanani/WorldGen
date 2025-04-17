@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "worldgen"
+version = "0.1.0"
+authors = [
+  { name="Ziyang Xie", email="ziyangxie01@gmail.com" }, # <-- Update this
+]
+description = "A package for world generation"
+readme = "README.md"
+requires-python = ">=3.8" # Adjust as needed
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License", # Choose your license
+    "Operating System :: OS Independent",
+]
+# Add dependencies here if any, e.g.:
+# dependencies = [
+#     "numpy>=1.20",
+#     "torch", # Example dependency
+# ]
+
+[tool.setuptools.packages.find]
+where = ["src"]  # Look for packages in the 'src' directory 
