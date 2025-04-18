@@ -10,17 +10,33 @@ authors = [
 ]
 description = "A package for world generation"
 readme = "README.md"
-requires-python = ">=3.8" # Adjust as needed
+requires-python = ">=3.10" # Adjust as needed
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License", # Choose your license
     "Operating System :: OS Independent",
 ]
 # Add dependencies here if any, e.g.:
-# dependencies = [
-#     "numpy>=1.20",
-#     "torch", # Example dependency
-# ]
+dependencies = [
+    "numpy>=1.20",
+    "torch>=2.2.0",
+    "torchvision>=0.17.0",
+    "diffusers>=0.33.1",
+    "xformers>=0.0.29",
+    "transformers>=4.48.3",
+    "viser==0.2.23",
+    "opencv-python",
+    "xformers>=0.0.24",
+    "huggingface-hub>=0.22.0",
+    "py360convert>=0.1.0",
+    "einops>=0.6.0",
+    "pillow>=8.0.0",
+    "safetensors>=0.3.0",
+    "UniK3D @ git+https://github.com/lpiccinelli-eth/UniK3D.git"
+]
 
 [tool.setuptools.packages.find]
-where = ["src"]  # Look for packages in the 'src' directory 
+where = ["src"]  # Look for packages in the 'src' directory
+
+[tool.setuptools.dynamic]
+version = {attr = "worldgen.__version__"} 

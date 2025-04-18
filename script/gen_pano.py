@@ -2,7 +2,7 @@ import argparse
 import torch
 import os
 import random
-from worldgen.pano_gen import generate_panorama
+from worldgen.pano_gen import build_pano_gen_model, gen_pano_image
 
 def main():
     parser = argparse.ArgumentParser(description="Generate images using FLUX pipelines.")
@@ -19,7 +19,6 @@ def main():
     parser.add_argument("--height", type=int, default=720, help="Height for panorama generation (default: 720).")
     parser.add_argument("--width", type=int, default=1440, help="Width for panorama generation (default: 1440).")
     parser.add_argument("--blend_extend", type=int, default=6, help="Blend extend value for panorama generation (default: 6).")
-    parser.add_argument("--lora_path", type=str, default="./checkpoints/pano_lora_720*1440_v1.safetensors", help="Path to the panorama LoRA file.")
 
     args = parser.parse_args()
 
@@ -42,12 +41,12 @@ def main():
     print(f"  Height: {args.height}")
     print(f"  Width: {args.width}")
     print(f"  Blend Extend: {args.blend_extend}")
-    print(f"  LoRA Path: {args.lora_path}")
-    generate_panorama(
+    model = build_pano_gen_model()
+    gen_pano_image(
+        model,
         args.prompt,
         output_path,
         args.seed,
-        args.lora_path,
         args.guidance_scale,
         args.num_inference_steps,
         args.height,

@@ -73,12 +73,6 @@ class ViserServer:
             visible=visible,
         )
 
-    @torch.no_grad()
-    def generate_world(self, image_path: str):
-        rgb_image = Image.open(image_path)
-        splat = self.worldgen._generate_world(rgb_image)
-        return splat
-    
     def add_gs(self, splat: SplatFile):
         self.scene_gs_handle = self.server.scene.add_gaussian_splats(
             "/scene_gs",
@@ -90,7 +84,7 @@ class ViserServer:
 
     def add_original_camera(self):
         h, w = 1080, 1920
-        fov = np.deg2rad(60)
+        fov = np.deg2rad(70)
         aspect = w / h
         self.original_camera = self.server.scene.add_camera_frustum("original_camera", fov, aspect)
         self.init_h, self.init_w = h, w
@@ -220,6 +214,8 @@ class ViserServer:
     def create_ui(self, client):
         initial_fov_rad = self.original_camera.fov
         initial_fov_deg = np.rad2deg(initial_fov_rad)
+        client.camera.position = (0, 0, 0)
+        client.camera.wxyz = (1, 0, 0, 0)
         client.camera.fov = initial_fov_rad
         client.camera.far = 10000.0
         client.camera.near = 0.01
@@ -247,9 +243,20 @@ class ViserServer:
             def _(value):
                 client.camera.fov = np.deg2rad(self.render_fov_input.value)
 
+    def generate_world(self):
+        if self.args.pano_image is not None:
+            pano_image = Image.open(self.args.pano_image)
+            splat = self.worldgen._generate_world(self.args.prompt, pano_image)
+        elif self.args.image is not None:
+            image = Image.open(self.args.image)
+            splat = self.worldgen.generate_world(self.args.prompt, image)
+        else:
+            splat = self.worldgen.generate_world(self.args.prompt)
+        return splat
+
 
     def run(self):
-        splat = self.generate_world(self.args.image)
+        splat = self.generate_world()
         self.add_gs(splat)
         self.add_original_camera()
 
@@ -282,7 +289,9 @@ class ViserServer:
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="World Generation Demo with Viser")
-    parser.add_argument("--image", "-i", type=str, required=True, help="Path to input Panorama image")
+    parser.add_argument("--prompt", "-p", type=str, default="A beautiful landscape with a river and mountains", help="Prompt for world generation")
+    parser.add_argument("--image", "-i", type=str, help="Path to input image")
+    parser.add_argument("--pano_image", type=str, default=None, help="Path to input Panorama image")
     args = parser.parse_args()
 
     server = ViserServer(args)

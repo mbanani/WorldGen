@@ -4,16 +4,21 @@ import cv2
 from PIL import Image
 from .pano_depth import build_depth_model, pred_pano_depth
 from .pano_seg import build_segment_model, seg_pano_fg
+from .pano_gen import build_pano_gen_model, gen_pano_image
 from .pano_inpaint import build_inpaint_model, inpaint_pano, inpaint_image
 
 from .utils import convert_rgbd_to_gs, SplatFile
 
 class WorldGen:
-    def __init__(self, device: torch.device = 'cuda', inpaint_bg: bool = False):
+    def __init__(self, 
+            device: torch.device = 'cuda', 
+            inpaint_bg: bool = False
+        ):
         self.device = device
         self.depth_model = build_depth_model(device)
+        self.pano_gen_model = build_pano_gen_model(device)
         self.seg_processor, self.seg_model = build_segment_model(device)
-        
+
         self.inpaint_bg = inpaint_bg
         if inpaint_bg:
             self.inpaint_pipe = build_inpaint_model(device)
@@ -70,7 +75,7 @@ class WorldGen:
         init_splat = self.depth2gs(init_pred)
         
         fg_mask = seg_pano_fg(self.seg_processor, self.seg_model, pano_image, init_pred["distance"])
-        edge_mask = cv2.dilate(fg_mask, np.ones((3,3), np.uint8), iterations=1) - cv2.erode(fg_mask, np.ones((3,3), np.uint8), iterations=1)
+        edge_mask = cv2.dilate(fg_mask, np.ones((5,5), np.uint8), iterations=1) - cv2.erode(fg_mask, np.ones((5,5), np.uint8), iterations=1)
         init_splat = self.mask_splat(init_splat, (1-edge_mask))
 
         if not self.inpaint_bg:
@@ -86,10 +91,5 @@ class WorldGen:
         return merged_splat
     
     def generate_world(self, text: str, image: Image.Image = None) -> SplatFile:
-        pass
-
-
-if __name__ == "__main__":
-    worldgen = WorldGen()
-    image = Image.open("data/background/timeless_desert.png")
-    worldgen._generate_world(image)
+        pano_image = gen_pano_image(self.pano_gen_model, text)
+        return self._generate_world(pano_image)
