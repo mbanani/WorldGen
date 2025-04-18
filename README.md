@@ -5,8 +5,9 @@
 ![Badge](https://img.shields.io/badge/build-passing-brightgreen)
 ![Badge](https://img.shields.io/badge/license-MIT-green)
 
-> Author 👨‍💻: [Ziyang Xie](https://github.com/ZiYang-xie)
+> Author 👨‍💻: [Ziyang Xie](https://ziyangxie.site/)  
 > Contact Email 📧: [ziyangxie01@gmail.com](mailto:ziyangxie01@gmail.com)
+> Feel free to contact me for any questions or collaborations!
 
 ## 🌟 Introduction
 🚀 **WorldGen** can generate 3D any scene in seconds from text prompts and images.  It is a powerful tool for creating 3D environments, objects, and scenes for games, simulations, and virtual reality applications.
@@ -32,9 +33,13 @@ pip install iopaint --no-dependencies
 
 ## 🎮 Quick Start / Usage
 
-Generate your first 3D scene in minutes:
+Generate your first 3D scene in seconds, just need a few lines of code:
+We support three modes:
+- 📝 Generate a 3D scene from a text prompt 
+- 🖼️ Generate a 3D scene from an image 
+- 📸 Generate a 3D scene from a panorama image 
 
-### Generate a 3D scene from a text prompt
+### WorldGen API
 ```python
 # Example using the Python API
 from worldgen import WorldGen
@@ -44,33 +49,57 @@ worldgen = WorldGen(device)
 
 # Generate a 3D scene from a text prompt
 splat = worldgen.generate_world("A beautiful landscape with a river and mountains")
-```
 
-### Generate a 3D scene from an image
-```python
+# Generate a 3D scene from an image
 image = Image.open("path/to/your/image.jpg")
-splat = worldgen.generate_world(text="<OPTIONAL: TEXT PROMPT to describe the scene>", image=image)
+splat = worldgen.generate_world(
+    image=image, 
+    text="<OPTIONAL: TEXT PROMPT to describe the scene>"
+)
+
+# Generate a 3D scene from a panorama image
+pano_image = Image.open("path/to/your/pano_image.jpg")
+splat = worldgen.generate_world(pano_image=pano_image)
 ```
 
-### [Optional] Generate a 3D scene from a panorama image
-You can also generate a 3D scene from a panorama image.
-```python
-pano_image = Image.open("path/to/your/pano_image.jpg")
-splat = worldgen._generate_world(pano_image=pano_image)
+### Demo with 3D Scene Visualization
+We also provide a demo script to help you quickly get started and visualize the 3D scene in a web browser. The script is powered by [Viser](https://github.com/nerfstudio-project/viser).
+```bash
+# Generate a 3D scene from a text prompt
+python demo.py -p "A beautiful landscape with a river and mountains"
+
+# Generate a 3D scene from an image
+python demo.py -i "path/to/your/image.jpg"
+
+# Generate a 3D scene from a panorama image
+python demo.py --pano "path/to/your/pano_image.jpg"
 ```
 
 ---
 
 ## 📜 License
 
-WorldGen is licensed under the MIT License. See the [LICENSE](LICENSE) file for details. <!-- You might want to create this file later -->
+WorldGen is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## 📚 Citation
+If you find this project useful, please consider citing it as follows:
+```bibtex
+@misc{worldgen,
+  author = {Ziyang Xie},
+  title = {WorldGen: Generate Any 3D Scene in Seconds},
+  year = {2025},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/ZiYang-xie/WorldGen}},
+}
+```
 
 ---
 
 ## 🤝 Acknowledgements
-This project is built on top of the following projects, thank them for their great work!
-- [UniK3D](https://github.com/lpiccinelli-eth/UniK3D)
+This project is built on top of the follows:
 - [Layerpano3D](https://github.com/3DTopia/LayerPano3D)
+- [Viser](https://github.com/nerfstudio-project/viser)
 - [FLUX.1](https://huggingface.co/black-forest-labs/FLUX.1-dev)
 - [OneFormer](https://github.com/SHI-Labs/OneFormer)
 - [LaMa](https://github.com/saic-mdal/lama)
