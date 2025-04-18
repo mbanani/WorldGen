@@ -16,11 +16,11 @@ class WorldGen:
         ):
         self.device = device
         self.depth_model = build_depth_model(device)
-        self.pano_gen_model = build_pano_gen_model(device)
-        self.seg_processor, self.seg_model = build_segment_model(device)
 
         self.inpaint_bg = inpaint_bg
         if inpaint_bg:
+            self.seg_processor, self.seg_model = build_segment_model(device)
+            self.pano_gen_model = build_pano_gen_model(device)
             self.inpaint_pipe = build_inpaint_model(device)
 
     def depth2gs(self, predictions) -> SplatFile:
@@ -73,13 +73,12 @@ class WorldGen:
     def _generate_world(self, pano_image: Image.Image) -> SplatFile:
         init_pred = pred_pano_depth(self.depth_model, pano_image)
         init_splat = self.depth2gs(init_pred)
-        
+        if not self.inpaint_bg:
+            return init_splat
+
         fg_mask = seg_pano_fg(self.seg_processor, self.seg_model, pano_image, init_pred["distance"])
         edge_mask = cv2.dilate(fg_mask, np.ones((3,3), np.uint8), iterations=1) - cv2.erode(fg_mask, np.ones((3,3), np.uint8), iterations=1)
         init_splat = self.mask_splat(init_splat, (1-edge_mask))
-
-        if not self.inpaint_bg:
-            return init_splat
         
         dilated_fg_mask = cv2.dilate(fg_mask, np.ones((5,5), np.uint8), iterations=10)
         pano_bg = inpaint_image(self.inpaint_pipe, pano_image, dilated_fg_mask)

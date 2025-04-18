@@ -217,7 +217,7 @@ class ViserServer:
         client.camera.position = (0, 0, 0)
         client.camera.wxyz = (1, 0, 0, 0)
         client.camera.fov = initial_fov_rad
-        client.camera.far = 10000.0
+        client.camera.far = 10000
         client.camera.near = 0.01
 
         with client.gui.add_folder("Camera Path"):
@@ -301,7 +301,7 @@ if __name__ == "__main__":
     parser.add_argument("--image", "-i", type=str, help="Path to input image")
     parser.add_argument("--output_dir", "-o", type=str, default="output", help="Path to output directory")
     parser.add_argument("--pano_image", type=str, default=None, help="Path to input Panorama image")
-    parser.add_argument("--inpaint_bg", type=bool, default=True, help="Whether to inpaint the background")
+    parser.add_argument("--inpaint_bg", action="store_true", help="Whether to inpaint the background")
     args = parser.parse_args()
 
     server = ViserServer(args)
