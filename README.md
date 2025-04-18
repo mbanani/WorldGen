@@ -1,8 +1,8 @@
+# WorldGen: Generate Any 3D Scene in Seconds 
 <div align="center">
   <img src="./assets/logo.png" alt="logo" width="300"/>  
 </div>
 
-# Generate Any 3D Scene in Seconds 
 
 <div align="center">
   
