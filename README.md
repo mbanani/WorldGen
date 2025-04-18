@@ -2,18 +2,22 @@
 
 [![GitHub Stars](https://img.shields.io/github/stars/ZiYang-xie/WorldGen?style=social&label=Star&maxAge=2592000)](https://github.com/ZiYang-xie/WorldGen/stargazers/)
 ![Badge](https://img.shields.io/badge/version-v1.0.0-blue)
-![Badge](https://img.shields.io/badge/build-passing-brightgreen)
 ![Badge](https://img.shields.io/badge/license-MIT-green)
 
-> Author 👨‍💻: [Ziyang Xie](https://ziyangxie.site/)  
-> Contact Email 📧: [ziyangxie01@gmail.com](mailto:ziyangxie01@gmail.com)
+> Author 👨‍💻: [Ziyang Xie](https://ziyangxie.site/) 
+> Contact Email 📧: [ziyangxie01@gmail.com](mailto:ziyangxie01@gmail.com)  
 > Feel free to contact me for any questions or collaborations!
 
 ## 🌟 Introduction
-🚀 **WorldGen** can generate 3D any scene in seconds from text prompts and images.  It is a powerful tool for creating 3D environments, objects, and scenes for games, simulations, and virtual reality applications.
+🚀 **WorldGen** can generate 3D scenes in seconds from text prompts and images.  It is a powerful tool for creating 3D environments, objects, and scenes for games, simulations, and virtual reality applications.
 
 ---
 
+## News and TODOs
+- [x] `04.17.2025` Add support for text-to-3D generation
+- [ ] Add support for image-to-3D generation
+- [ ] Support better background inpainting
+- [ ] High-resolution 3D scene generation
 
 ## 📦 Installation
 
@@ -29,12 +33,11 @@ pip install -e .
 pip install iopaint --no-dependencies
 ```
 
----
 
 ## 🎮 Quick Start / Usage
 
-Generate your first 3D scene in seconds, just need a few lines of code:
-We support three modes:
+Generate your first 3D scene in seconds, just need a few lines of code    
+We support three modes of generation:
 - 📝 Generate a 3D scene from a text prompt 
 - 🖼️ Generate a 3D scene from an image 
 - 📸 Generate a 3D scene from a panorama image 
@@ -75,7 +78,6 @@ python demo.py -i "path/to/your/image.jpg"
 python demo.py --pano "path/to/your/pano_image.jpg"
 ```
 
----
 
 ## 📜 License
 
@@ -98,6 +100,7 @@ If you find this project useful, please consider citing it as follows:
 
 ## 🤝 Acknowledgements
 This project is built on top of the follows:
+- [Unik3D](https://github.com/lpiccinelli-eth/UniK3D)
 - [Layerpano3D](https://github.com/3DTopia/LayerPano3D)
 - [Viser](https://github.com/nerfstudio-project/viser)
 - [FLUX.1](https://huggingface.co/black-forest-labs/FLUX.1-dev)
