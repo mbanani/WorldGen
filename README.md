@@ -1,15 +1,28 @@
-# 🌍 WorldGen - Generate Any 3D Scene in Seconds 
+<div align="center">
+  <img src="./assets/logo.png" alt="logo" width="300"/>  
+</div>
 
+# Generate Any 3D Scene in Seconds 
+
+<div align="center">
+  
 [![GitHub Stars](https://img.shields.io/github/stars/ZiYang-xie/WorldGen?style=social&label=Star&maxAge=2592000)](https://github.com/ZiYang-xie/WorldGen/stargazers/)
 ![Badge](https://img.shields.io/badge/version-v1.0.0-blue)
 ![Badge](https://img.shields.io/badge/license-MIT-green)
 
-> Author 👨‍💻: [Ziyang Xie](https://ziyangxie.site/) 
+</div>
+
+> Author 👨‍💻: [Ziyang Xie](https://ziyangxie.site/) &nbsp;
 > Contact Email 📧: [ziyangxie01@gmail.com](mailto:ziyangxie01@gmail.com)  
 > Feel free to contact me for any questions or collaborations!
 
 ## 🌟 Introduction
 🚀 **WorldGen** can generate 3D scenes in seconds from text prompts and images.  It is a powerful tool for creating 3D environments, objects, and scenes for games, simulations, and virtual reality applications.
+
+Here are the key features of WorldGen:
+- ⚡️ **Instant 3D Generation**: Create full 3D scenes from input data in seconds
+- 🧭 **360° Free Exploration**: WorldGen supports free exploration of the generated 3D scene in real-time.
+- 🌈 **Diverse Scenes Support**: WorldGen supports both indoor and outdoor scenes.
 
 ---
 

@@ -75,7 +75,7 @@ class WorldGen:
         init_splat = self.depth2gs(init_pred)
         
         fg_mask = seg_pano_fg(self.seg_processor, self.seg_model, pano_image, init_pred["distance"])
-        edge_mask = cv2.dilate(fg_mask, np.ones((5,5), np.uint8), iterations=1) - cv2.erode(fg_mask, np.ones((5,5), np.uint8), iterations=1)
+        edge_mask = cv2.dilate(fg_mask, np.ones((3,3), np.uint8), iterations=1) - cv2.erode(fg_mask, np.ones((3,3), np.uint8), iterations=1)
         init_splat = self.mask_splat(init_splat, (1-edge_mask))
 
         if not self.inpaint_bg:

@@ -45,7 +45,7 @@ class ViserServer:
         self.server.scene.enable_default_lights(False)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         
-        self.worldgen = WorldGen(self.device)
+        self.worldgen = WorldGen(self.device, inpaint_bg=args.inpaint_bg)
         self.args = args
         self.frames = []
         self.start_camera = None
@@ -246,7 +246,7 @@ class ViserServer:
     def generate_world(self):
         if self.args.pano_image is not None:
             pano_image = Image.open(self.args.pano_image)
-            splat = self.worldgen._generate_world(self.args.prompt, pano_image)
+            splat = self.worldgen._generate_world(pano_image)
         elif self.args.image is not None:
             image = Image.open(self.args.image)
             splat = self.worldgen.generate_world(self.args.prompt, image)
@@ -254,11 +254,19 @@ class ViserServer:
             splat = self.worldgen.generate_world(self.args.prompt)
         return splat
 
+    def set_bg(self, splat: SplatFile):
+        position = np.linalg.norm(splat["centers"], axis=1)
+        indices = np.argsort(position)[-5:]  # Get indices of k largest distances
+        farthest_point_color = splat["rgbs"][indices]
+        farthest_point_color = np.mean(farthest_point_color, axis=0)
+        bg_img = np.ones((1, 1, 3)) * farthest_point_color
+        self.server.scene.set_background_image(bg_img)
 
     def run(self):
         splat = self.generate_world()
         self.add_gs(splat)
         self.add_original_camera()
+        self.set_bg(splat)
 
         @self.server.on_client_connect
         def connect(client: viser.ClientHandle) -> None:
@@ -291,7 +299,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="World Generation Demo with Viser")
     parser.add_argument("--prompt", "-p", type=str, default="A beautiful landscape with a river and mountains", help="Prompt for world generation")
     parser.add_argument("--image", "-i", type=str, help="Path to input image")
+    parser.add_argument("--output_dir", "-o", type=str, default="output", help="Path to output directory")
     parser.add_argument("--pano_image", type=str, default=None, help="Path to input Panorama image")
+    parser.add_argument("--inpaint_bg", type=bool, default=True, help="Whether to inpaint the background")
     args = parser.parse_args()
 
     server = ViserServer(args)

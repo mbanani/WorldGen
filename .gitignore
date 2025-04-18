@@ -36,6 +36,7 @@ Thumbs.db
 # IDE specific
 .vscode/
 .idea/
+output/
 
 # Testing
 .pytest_cache/
