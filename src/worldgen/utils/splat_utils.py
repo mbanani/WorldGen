@@ -1,8 +1,12 @@
 
 import numpy as np
 import torch
-from pytorch3d.transforms import matrix_to_quaternion
 from plyfile import PlyData, PlyElement
+
+try:
+    from pytorch3d.transforms import matrix_to_quaternion
+except:
+    print("Failed to import from pytorch3d")
 
 class SplatFile:
     def __init__(
@@ -81,8 +85,8 @@ def convert_rgbd_to_gs(rgb, distance, rays, dis_threshold=0., epsilon=1e-3) -> S
 
     delta_phi = 2 * torch.pi / W
     delta_theta = torch.pi / H
-    sigma_x = valid_distance * delta_phi 
-    sigma_y = valid_distance * delta_theta 
+    sigma_x = valid_distance * delta_phi
+    sigma_y = valid_distance * delta_theta
     sigma_z = torch.ones_like(valid_distance) * epsilon
 
     S = torch.stack([sigma_x, sigma_y, sigma_z], dim=1)
